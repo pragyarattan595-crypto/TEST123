@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VLTD & Fleet Tracking Packages — Axestrack</title>
+<!-- fonts served locally via installed system fonts (Barlow Condensed, IBM Plex Sans, IBM Plex Mono) -->
+<style>
+  :root{
+    --navy:#0B1F33;
+    --navy-2:#132C46;
+    --blue:#1F4E79;
+    --blue-mid:#2E7BB8;
+    --blue-soft:#E8F0F8;
+    --amber:#F2A104;
+    --amber-soft:#FEF3DC;
+    --paper:#EDF1F6;
+    --line:#D7E0EA;
+    --muted:#6B7C8F;
+    --ink:#16283A;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:#C9D3DE;
+    font-family:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    padding:24px 12px;
+  }
+
+  .sheet{
+    width:1123px;
+    min-height:1587px;
+    margin:0 auto;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(11,31,51,.35);
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    background:
+      radial-gradient(1200px 300px at 85% -40%, rgba(46,123,184,.55), transparent 70%),
+      linear-gradient(105deg, var(--navy) 0%, var(--navy-2) 58%, #1B3A5B 100%);
+    color:#fff;
+    padding:30px 44px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute; inset:auto 0 0 0; height:4px;
+    background:linear-gradient(90deg, var(--amber) 0 22%, rgba(255,255,255,.25) 22% 26%, var(--blue-mid) 26% 100%);
+  }
+  .grid-motif{
+    position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:linear-gradient(90deg, transparent 40%, #000 100%);
+    -webkit-mask-image:linear-gradient(90deg, transparent 40%, #000 100%);
+  }
+  .mast-inner{position:relative; display:flex; align-items:flex-end; justify-content:space-between; gap:30px;}
+  .brand-row{display:flex; align-items:center; gap:12px; margin-bottom:16px;}
+  .logo-mark{
+    width:34px;height:34px;border-radius:8px;
+    background:linear-gradient(140deg,var(--amber),#D98600);
+    display:grid;place-items:center;
+    font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;color:var(--navy);
+  }
+  .brand-name{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:22px;letter-spacing:.18em;text-transform:uppercase;}
+  .brand-sub{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9EBBD6;margin-top:1px;}
+  h1{
+    font-family:"Barlow Condensed", "Arial Narrow", sans-serif;
+    font-weight:700; font-size:60px; line-height:.94; letter-spacing:-.005em; text-transform:uppercase;
+  }
+  h1 em{font-style:normal;color:var(--amber);}
+  .kicker{
+    display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--navy); background:var(--amber); padding:4px 10px; border-radius:3px; margin-bottom:12px;
+  }
+  .deck{margin-top:12px; font-size:13.5px; line-height:1.55; color:#C9DCEE; max-width:620px;}
+  .mast-stats{display:flex; gap:10px; flex-shrink:0;}
+  .stat{
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16);
+    border-radius:6px; padding:11px 14px; min-width:104px;
+  }
+  .stat b{display:block; font-family:"Barlow Condensed",sans-serif; font-size:27px; line-height:1; color:#fff;}
+  .stat span{font-size:9.5px; letter-spacing:.11em; text-transform:uppercase; color:#9EBBD6;}
+
+  /* ---------- Signature: route line ---------- */
+  .routeband{padding:20px 44px 0; background:var(--paper);}
+  .routeband svg{display:block; width:100%; height:58px;}
+
+  /* ---------- Package cards ---------- */
+  .cards{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+    padding:6px 44px 22px; background:var(--paper);
+  }
+  .card{
+    background:#fff; border:1px solid var(--line); border-top:3px solid var(--blue);
+    border-radius:4px; padding:16px 15px 14px; display:flex; flex-direction:column;
+  }
+  .card.hero{background:var(--navy); border-color:var(--navy); border-top-color:var(--amber); color:#fff;}
+  .tier{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px;}
+  .tier-no{font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; color:var(--blue-mid); letter-spacing:.06em;}
+  .card.hero .tier-no{color:var(--amber);}
+  .tier-tag{font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:99px; padding:2px 7px;}
+  .card.hero .tier-tag{color:var(--navy); background:var(--amber); border-color:var(--amber);}
+  .card h2{
+    font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:24px; line-height:1.02;
+    text-transform:uppercase; color:var(--navy); margin-bottom:10px; min-height:48px;
+  }
+  .card.hero h2{color:#fff;}
+  .price{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:16.5px; color:var(--blue); line-height:1.25;}
+  .card.hero .price{color:var(--amber);}
+  .price small{display:block; font-family:"IBM Plex Sans",sans-serif; font-weight:500; font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-top:4px;}
+  .card.hero .price small{color:#8FB0CD;}
+  .rule{height:1px; background:var(--line); margin:12px 0 11px;}
+  .card.hero .rule{background:rgba(255,255,255,.18);}
+  .meta-label{font-size:8.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); margin-bottom:3px;}
+  .card.hero .meta-label{color:#8FB0CD;}
+  .meta-val{font-size:11.5px; font-weight:600; line-height:1.35; color:var(--ink); margin-bottom:10px;}
+  .card.hero .meta-val{color:#EAF2F9;}
+  .platform{
+    display:inline-block; font-size:10.5px; font-weight:600; background:var(--blue-soft); color:var(--blue);
+    border-radius:3px; padding:5px 8px; line-height:1.3;
+  }
+  .card.hero .platform{background:rgba(242,161,4,.15); color:var(--amber);}
+  ul.bullets{list-style:none; margin-top:11px; display:flex; flex-direction:column; gap:5px;}
+  ul.bullets li{position:relative; padding-left:11px; font-size:10.5px; line-height:1.42; color:#3C536A;}
+  ul.bullets li::before{content:""; position:absolute; left:0; top:6px; width:4px; height:4px; background:var(--blue-mid); border-radius:50%;}
+  .card.hero ul.bullets li{color:#C6D9E8;}
+  .card.hero ul.bullets li::before{background:var(--amber);}
+  .chips{margin-top:auto; padding-top:12px; display:flex; flex-wrap:wrap; gap:4px;}
+  .chip{font-size:8.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; border:1px solid var(--line); color:var(--muted); border-radius:3px; padding:3px 6px;}
+  .chip.on{border-color:#BCD4E8; background:var(--blue-soft); color:var(--blue);}
+  .card.hero .chip{border-color:rgba(255,255,255,.2); color:#8FB0CD;}
+  .card.hero .chip.on{border-color:rgba(242,161,4,.4); background:rgba(242,161,4,.14); color:var(--amber);}
+
+  /* ---------- Tables ---------- */
+  .tables{padding:0 44px 26px; background:var(--paper); display:flex; flex-direction:column; gap:22px;}
+  .sec-head{display:flex; align-items:center; gap:12px; margin-bottom:9px;}
+  .sec-num{font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600; color:#fff; background:var(--blue); border-radius:3px; padding:2px 7px;}
+  .sec-head h3{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:22px; letter-spacing:.03em; text-transform:uppercase; color:var(--navy);}
+  .sec-head .hint{margin-left:auto; font-size:9.5px; color:var(--muted); letter-spacing:.05em;}
+
+  table{width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); table-layout:fixed;}
+  thead th{
+    background:var(--navy); color:#fff; font-family:"Barlow Condensed",sans-serif; font-weight:600;
+    font-size:14px; letter-spacing:.06em; text-transform:uppercase; padding:8px 8px; text-align:center;
+    border-right:1px solid rgba(255,255,255,.12);
+  }
+  thead th:first-child{text-align:left; padding-left:12px;}
+  thead th:last-child{border-right:none; background:linear-gradient(var(--navy),var(--navy)) padding-box; box-shadow:inset 0 -3px 0 var(--amber);}
+  thead th span{display:block; font-family:"IBM Plex Sans",sans-serif; font-weight:500; font-size:8.5px; letter-spacing:.08em; color:#9EBBD6; text-transform:none; margin-top:2px;}
+  tbody td{
+    border-top:1px solid var(--line); border-right:1px solid var(--line);
+    padding:6px 8px; text-align:center; font-size:10.5px; font-weight:500; color:#41586E;
+  }
+  tbody td:last-child{border-right:none; background:#FAFCFE;}
+  tbody tr:nth-child(even) td{background:#F7FAFC;}
+  tbody tr:nth-child(even) td:last-child{background:#F3F8FC;}
+  td.feat{text-align:left; font-size:11px; font-weight:600; color:var(--ink); padding-left:12px;}
+  td.feat i{font-family:"IBM Plex Mono",monospace; font-style:normal; font-size:9px; color:#A6B6C6; margin-right:7px;}
+  col.label{width:29%;}
+
+  .yes{display:inline-block; width:15px; height:15px; border-radius:50%; background:var(--blue); position:relative; vertical-align:middle;}
+  .yes::after{content:""; position:absolute; left:4.6px; top:3px; width:4px; height:7.5px; border:solid #fff; border-width:0 1.7px 1.7px 0; transform:rotate(42deg);}
+  td:last-child .yes{background:var(--blue);}
+  .no{display:inline-block; width:11px; height:2px; background:#C3CFDB; border-radius:2px; vertical-align:middle;}
+  .opt{display:inline-block; font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#8A5C00; background:var(--amber-soft); border:1px solid #F3D89A; border-radius:99px; padding:2px 7px;}
+  .txt{font-size:10px; font-weight:600; color:#41586E;}
+  .txt.dim{color:#9AA9B8; font-weight:500;}
+
+  .legend{display:flex; align-items:center; gap:16px; margin-top:8px; font-size:9.5px; color:var(--muted);}
+  .legend span{display:flex; align-items:center; gap:6px;}
+
+  /* ---------- Footer ---------- */
+  .foot{
+    margin-top:auto; background:var(--navy); color:#8FB0CD; padding:16px 44px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px; font-size:10px; line-height:1.5;
+  }
+  .foot strong{color:#fff; font-weight:600;}
+  .foot .note{max-width:660px;}
+  .foot .cta{
+    font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--navy); background:var(--amber); padding:8px 16px; border-radius:3px; white-space:nowrap;
+  }
+
+  @media print{
+    @page{size:A3 portrait; margin:0;}
+    body{background:#fff; padding:0;}
+    .sheet{box-shadow:none; width:100%; min-height:100vh;}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="grid-motif"></div>
+    <div class="mast-inner">
+      <div>
+        <div class="brand-row">
+          <div class="logo-mark">A</div>
+          <div>
+            <div class="brand-name">Axestrack</div>
+            <div class="brand-sub">Vehicle Location Tracking &amp; Fleet Intelligence</div>
+          </div>
+        </div>
+        <div class="kicker">Package &amp; Pricing Guide</div>
+        <h1>VLTD to<br><em>Enterprise Fleet</em><br>Management</h1>
+        <p class="deck">Four packages, one upgrade path — from statutory VLTD compliance to a fully managed fleet operations platform. Compare the device, the platform, the reports and the service scope side by side, then pick the tier that matches your fleet today.</p>
+      </div>
+      <div class="mast-stats">
+        <div class="stat"><b>4</b><span>Packages</span></div>
+        <div class="stat"><b>23</b><span>Platform features</span></div>
+        <div class="stat"><b>Pan-India</b><span>service</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIGNATURE: ROUTE LINE -->
+  <div class="routeband">
+    <svg viewBox="0 0 1035 58" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" y1="52" x2="1035" y2="52" stroke="#D7E0EA" stroke-width="1"/>
+      <polyline points="20,48 129,48 258,36 388,36 517,24 647,24 776,10 1015,10"
+                fill="none" stroke="#1F4E79" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="20,48 129,48 258,36 388,36 517,24 647,24 776,10 1015,10"
+                fill="none" stroke="#2E7BB8" stroke-width="1" stroke-dasharray="5 6" stroke-linecap="round"/>
+      <g fill="#fff" stroke="#1F4E79" stroke-width="2.5">
+        <circle cx="129" cy="48" r="6"/><circle cx="388" cy="36" r="6"/><circle cx="647" cy="24" r="6"/>
+      </g>
+      <circle cx="906" cy="10" r="7.5" fill="#F2A104" stroke="#0B1F33" stroke-width="2.5"/>
+      <text x="20" y="42" font-family="IBM Plex Mono, monospace" font-size="9" fill="#6B7C8F" letter-spacing="1">COMPLIANCE</text>
+      <text x="1015" y="42" font-family="IBM Plex Mono, monospace" font-size="9" fill="#6B7C8F" letter-spacing="1" text-anchor="end">FULL FLEET CONTROL</text>
+    </svg>
+  </div>
+
+  <!-- PACKAGE CARDS -->
+  <section class="cards">
+    <article class="card">
+      <div class="tier"><span class="tier-no">PKG 01</span><span class="tier-tag">Compliance</span></div>
+      <h2>VLTD<br>Compliance</h2>
+      <div class="price">₹4,500 + GST<small>One time</small></div>
+      <div class="rule"></div>
+      <div class="meta-label">Built for</div>
+      <div class="meta-val">Compliance-only</div>
+      <div class="meta-label">Platform</div>
+      <span class="platform">Basic GoldX (On Demand)</span>
+      <ul class="bullets">
+        <li>VLTD device &amp; certification</li>
+        <li>Basic live tracking (GoldX on demand)</li>
+        <li>Designed for statutory compliance only</li>
+      </ul>
+      <div class="chips">
+        <span class="chip on">VLTD Certificate</span>
+        <span class="chip">AIS 140 Device</span>
+       
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="tier"><span class="tier-no">PKG 02</span><span class="tier-tag">Tracking</span></div>
+      <h2>Basic GPS<br>Tracking</h2>
+      <div class="price">₹5,500 + GST<small>One time</small></div>
+      <div class="rule"></div>
+      <div class="meta-label">Built for</div>
+      <div class="meta-val">Daily visibility with basic tracking</div>
+      <div class="meta-label">Platform</div>
+      <span class="platform">Complete GoldX Platform</span>
+      <ul class="bullets">
+        <li>Live tracking, route monitoring, site in/out</li>
+        <li>Stoppage &amp; overspeed alerts</li>
+        <li>Daily &amp; monthly KM reports</li>
+        <li>API integration</li>
+        <li>Limited installation support</li>
+      </ul>
+      <div class="chips">
+        <span class="chip on">VLTD Certificate</span>
+        <span class="chip on">AIS 140 Device+Installation</span>
+        <span class="chip on">API</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="tier"><span class="tier-no">PKG 03</span><span class="tier-tag">Advanced</span></div>
+      <h2>Advanced<br>Fleet Tracking</h2>
+      <div class="price">₹6,500 + GST<small>One time</small></div>
+      <div class="rule"></div>
+      <div class="meta-label">Built for</div>
+      <div class="meta-val">Advanced tracking for Large fleet</div>
+      <div class="meta-label">Platform</div>
+      <span class="platform">eLogix (Home Dashboard)</span>
+      <ul class="bullets">
+        <li>eLogix home interface</li>
+        <li>PAN India installation &amp; maintenance</li>
+        <li>API integration</li>
+        <li>Several additional modules: trip summary, challan, documents, e-way bill, Vehicle Performance Report, geofence, multi-GPS</li>
+        </ul>
+      <div class="chips">
+        <span class="chip on">VLTD Certificate</span>
+        <span class="chip on">AIS 140 Device + Installation</span>
+        <span class="chip on">API</span>
+      </div>
+    </article>
+
+    <article class="card hero">
+      <div class="tier"><span class="tier-no">PKG 04</span><span class="tier-tag">Recommended</span></div>
+      <h2>Enterprise<br>Fleet Management</h2>
+      <div class="price">₹5,500 + ₹250 + GST<small>One time + per vehicle / month</small></div>
+      <div class="rule"></div>
+      <div class="meta-label">Built for</div>
+      <div class="meta-val">Connected Operating System for Large enterprise fleets</div>
+      <div class="meta-label">Platform</div>
+      <span class="platform">Complete eLogix Platform</span>
+      <ul class="bullets">
+        <li>End-to-end Trip management</li>
+        <li>Next-Gen AI based Analytics</li>
+	<li>Business Intelligence Dashboard</li>
+        <li>Advanced Alert Management</li>
+        <li>50 plus premium modules</li>
+      </ul>
+      <div class="chips">
+        <span class="chip on">VLTD Certificate</span>
+        <span class="chip on">AIS 140 Device+Installation</span>
+        <span class="chip on">API</span>
+        <span class="chip on">PAN India</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- TABLES -->
+  <div class="tables">
+
+    <section>
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h3>Platform features &amp; reports</h3>
+        <span class="hint">Paid Add-on = available on Package 3 at additional cost</span>
+      </div>
+      <table>
+        <colgroup><col class="label"><col><col><col><col></colgroup>
+        <thead>
+          <tr>
+            <th>Feature / Report</th>
+            <th>Package 1<span>Basic GoldX (On Demand)</span></th>
+            <th>Package 2<span>Complete GoldX</span></th>
+            <th>Package 3<span>Basic eLogix</span></th>
+            <th>Package 4<span>Complete eLogix</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat"><i>01</i>Live vehicle tracking</td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>02</i>Route tracking</td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>03</i>Site in / out monitoring</td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>04</i>Stoppage report</td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>05</i>Overspeed alerts</td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>06</i>Daily / monthly KM reports</td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>07</i>Trip summary (location / site based)</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>08</i>Vehicle performance reports</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>09</i>Geofence management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>10</i>Dynamic dashboard</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>11</i>Challan management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>12</i>Vehicle document management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>13</i>E-way bill management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>14</i>Multi-GPS vehicle integration</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>15</i>Multi tracking modes (GPS, Fastag, SIM, API based)</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>16</i>Trip management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>17</i>Xsights — advanced BI tool</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>18</i>Connected OS layer</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>19</i>OBD integrations</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>20</i>ERP integrations</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>21</i>Advanced alert management</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>22</i>Additional premium modules</td><td><span class="no"></span></td><td><span class="no"></span></td><td><span class="opt">Paid Add-on</span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>23</i>CS support</td><td><span class="no"></span></td><td><span class="txt">General</span></td><td><span class="txt">Standard</span></td><td><span class="txt">Dedicated</span></td></tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><i class="yes"></i> Included</span>
+        <span><i class="no"></i> Not available</span>
+        <span><i class="opt">Paid Add-on</i> Available at additional cost</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h3>Customer support &amp; service scope</h3>
+        <span class="hint">AT = Axestrack service locations</span>
+      </div>
+      <table>
+        <colgroup><col class="label"><col><col><col><col></colgroup>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Package 1</th>
+            <th>Package 2</th>
+            <th>Package 3</th>
+            <th>Package 4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat"><i>01</i>Customer login</td><td><span class="txt dim">Shared on demand</span></td><td><span class="txt">Shared</span></td><td><span class="txt">Shared</span></td><td><span class="txt">Shared</span></td></tr>
+          <tr><td class="feat"><i>02</i>Password reset support</td><td><span class="txt dim">After 15 days</span></td><td><span class="txt">Standard</span></td><td><span class="txt">Standard</span></td><td><span class="txt">Standard</span></td></tr>
+          <tr><td class="feat"><i>03</i>Device handover sign-off</td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>04</i>Installation coordination</td><td><span class="txt dim">On demand</span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>05</i>Installation follow-up</td><td><span class="no"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>06</i>Device health monitoring</td><td><span class="no"></span></td><td><span class="txt">Basic</span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>07</i>Device uptime monitoring</td><td><span class="no"></span></td><td><span class="txt">Basic</span></td><td><span class="yes"></span></td><td><span class="yes"></span></td></tr>
+          <tr><td class="feat"><i>08</i>Maintenance support</td><td><span class="no"></span></td><td><span class="txt">AT — limited locations</span></td><td><span class="txt">AT — PAN India</span></td><td><span class="txt">AT — PAN India</span></td></tr>
+          <tr><td class="feat"><i>09</i>Fleet monitoring support</td><td><span class="txt dim">Basic</span></td><td><span class="txt">Basic track &amp; trace</span></td><td><span class="txt">Advanced tracking</span></td><td><span class="txt">Complete fleet operations</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="note">
+      <strong>Commercials are indicative</strong> and vary with fleet size, device variant, contract tenure and installation geography. VLTD certification is included in every package. Package 3 add-on modules are chargeable; Package 4 includes a recurring ₹250/vehicle/month platform fee. Final scope is confirmed in the signed order form.
+    </div>
+    <div class="cta">Talk to Axestrack</div>
+  </footer>
+
+</div>
+</body>
+</html>
